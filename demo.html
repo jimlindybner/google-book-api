@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Books API</title>
+</head>
+<body>
+    <h1>Google Books API</h1>
+    <div id="books"></div>
+    <script>
+        // API KEY & URL
+        const key = '';
+        const bookTitle = "web+development";
+        const url = `https://www.googleapis.com/books/v1/volumes?q=${bookTitle}&key=${key}`;
+        let books = document.querySelector("#books");
+
+        fetch(url).then(function (response) {
+            return response.json();
+        }).then(function (data) {
+            console.log(data);
+
+            data.items.forEach(function(book) {
+                console.log(book.volumeInfo.title);
+
+                // link, author, img, description
+
+                books.innerHTML += `<h2>${book.volumeInfo.title}</h2>`;
+                books.innerHTML += `<p>${book.volumeInfo.authors.join('; ')}</p>`;
+                books.innerHTML += `<p><img src="${book.volumeInfo.imageLinks.thumbnail}"></p>`;
+                books.innerHTML += `<p>${book.volumeInfo.description}</p>`;
+                books.innerHTML += `<a href="${book.volumeInfo.infoLink}" target="_blank">LINK</a></p>`;
+                books.innerHTML += `<hr>`;
+            });
+
+        }).catch(function (err) {
+            // there was an error
+            console.warn("There was an error", err);
+        });
+    </script>
+</body>
+</html>
